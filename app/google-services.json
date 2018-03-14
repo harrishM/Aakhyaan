@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "457579174518",
+    "firebase_url": "https://aakhyaan-41a13.firebaseio.com",
+    "project_id": "aakhyaan-41a13",
+    "storage_bucket": "aakhyaan-41a13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457579174518:android:0588201db5e49330",
+        "android_client_info": {
+          "package_name": "com.gmail.sowmiyanagarajan98.aakhyaan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457579174518-vpbfcrvtvesm8guv6nn9strnl43t1ff2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdHliqpgpW_pJ_y9MF-aWPucN3xv59fGg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
