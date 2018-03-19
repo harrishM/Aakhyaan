@@ -16,18 +16,32 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText inputEmail, inputPassword, inputName;
     private Button btnSignIn, btnSignUp, btnResetPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref;
+    private String userID;
+    Object c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        ref=FirebaseDatabase.getInstance().getReferenceFromUrl("https://aakhyaan-41a13.firebaseio.com/users");
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -35,9 +49,12 @@ public class SignupActivity extends AppCompatActivity {
         btnSignIn = (Button) findViewById(R.id.sign_in_button);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
         inputEmail = (EditText) findViewById(R.id.email);
+        inputName = (EditText) findViewById(R.id.name);
         inputPassword = (EditText) findViewById(R.id.password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnResetPassword = (Button) findViewById(R.id.btn_reset_password);
+
+
 
        btnResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,11 +75,17 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                final String email = inputEmail.getText().toString().trim();
+                final String name = inputName.getText().toString().trim();
+                final String password = inputPassword.getText().toString().trim();
 
-                if (TextUtils.isEmpty(email)) {
+                /*if (TextUtils.isEmpty(email)) {
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(name)) {
+                    Toast.makeText(getApplicationContext(), "Enter name!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -75,6 +98,8 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                */
 
                 progressBar.setVisibility(View.VISIBLE);
                 //create user
@@ -93,11 +118,38 @@ public class SignupActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(SignupActivity.this, "Signup successful! Check your inbox to verify mail." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
+
+                                    FirebaseUser user = auth.getCurrentUser();
+
+                                    DatabaseReference refchild=ref.child(userID = user.getUid());
+                                    DatabaseReference name1=refchild.child("name");
+                                    DatabaseReference email1=refchild.child("email");
+
+                                    name1.setValue(name);
+                                    email1.setValue(email);
+
                                     startActivity(new Intent(SignupActivity.this, SignupActivity.class));
                                     finish();
                                 }
                             }
                         });
+                /*count.addValueEventListener(new ValueEventListener() {
+                    public void onDataChange(DataSnapshot snapshot) {
+                        c = snapshot.getValue();
+                        System.out.println(c);
+                        System.out.println(String.valueOf(Long.parseLong(c.toString())+1));
+                        User u = new User("",0,email,name);
+                        users.child("users").child(String.valueOf(Long.parseLong(c.toString())+1)).setValue(u);
+                        count.setValue(String.valueOf(Long.parseLong(c.toString())+1));
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });*/
+
+
+
+
 
             }
         });
